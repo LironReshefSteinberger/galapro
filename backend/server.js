@@ -3,7 +3,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser')
 const app = express()
 const http = require('http').Server(app);
-// const io = require('socket.io')(http);
+const io = require('socket.io')(http);
 
 const addUrlRoutes = require('./routes/UrlRoute')
 
@@ -27,15 +27,15 @@ http.listen(port, () => {
 });
 
 
-// io.on('connection', socket => {
-//   console.log('user connected')
+io.on('connection', socket => {
+  console.log('connected to socket')
 
-//   socket.on('newMatch', () => {
-//     io.emit('newMatch');
-//   })
-  
-//   socket.on('disconnect', () => {
-//     console.log('user disconnected');
-//   })
-// })
+  socket.on('openSocket', () => {
+    io.emit('openSocket');
+  })
+
+  // socket.on('disconnect', () => {
+  //   // console.log('user disconnected');
+  // })
+})
 // app.listen(3000, () => console.log('Example app listening on port 3000  !'))

@@ -44,7 +44,6 @@ export default {
   },
   computed: {
     url() {
-      console.log('gamesForBabyHomeDisplay in home-');
       return this.$store.getters.setUrl;
             // this.$router.push(this.$store.getters.setUrl);
             // if (this.$store.getters.setUrl) window.location.href = /a;
@@ -53,10 +52,15 @@ export default {
       // return this.redirectUrl(this.$store.getters.setUrl);
     },
     msg() {
-            console.log('gamesForBassssssbyHomeDisplay in home-');
-
       return this.$store.getters.setMsg;
     },
   },
+  sockets: {
+    openSocket() {
+      // this.$store.dispatch({ type: "openSocket", url: this.searchBy.url });
+      this.$socket.emit('openSocket')
+
+    }
+  }
 };
 </script>

@@ -11,7 +11,7 @@ module.exports = (app) => {
         
         UrlService.queryUrl(req.query.url, req.query.isChecked)
             .then(data => {
-                console.log('data', data);
+                console.log('data in route', data);
                 
                 res.json(data);
             })

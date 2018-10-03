@@ -52,18 +52,14 @@ export default new Vuex.Store({
       },
     },
     actions: {
-        // loadUrl(context, { urlId }) {
-        //     context.commit({ type: 'setUrlLoading', isLoading: true })
-        //     // console.log('route, urlId', { urlId });
-        //     return UrlService.getUrlById(urlId)
-        //         .then((url) => {
-        //             context.commit({ type: 'setUrl', url })
-        //             return url;
-        //         })
-        //         .finally(() => {
-        //             context.commit({ type: 'setUrlLoading', isLoading: false });
-        //         })
-        // },
+        openSocket(context, {url}) {
+            context.commit({type: 'setUrlSocket', url})
+            MatchService.getMatch(url)
+               .then(activities => {
+                //    console.log('match from backend in front', activities);
+                   context.commit({type: 'setMatch', activities})
+                   })
+        },
         searchBy(context, { searchBy }) {
             // context.commit({ type: 'setUrlLoading', isLoading: true })
             context.commit({ type: 'setSearch', searchBy })
