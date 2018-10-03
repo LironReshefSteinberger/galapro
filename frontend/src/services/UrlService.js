@@ -9,6 +9,7 @@ function query(criteria = {url: '', isChecked}) {
     var queryParams = `?url=${criteria.url}&isChecked=${criteria.isChecked}`;
     return axios.get(URL_URL + queryParams)
         .then(res => {
+            console.log('url back from server', res.data);
             return res.data})
 }
 

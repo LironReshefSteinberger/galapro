@@ -1,31 +1,36 @@
-// const urls = [{
-//     "id": _makeId(),
-//     "url": "www.google.com",
-// },
-// {
-//     "id": _makeId(),
-//     "url": "www.broadway.com",
-// },
-// {
-//     "id": _makeId(),
-//     "url": "www.amazon.com",
-// },
-// ];
+const ObjectId = require('mongodb').ObjectId;
+const MongoService = require('./MongoService') 
 
-
-// const regexUrl = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/gm;
-
-const data = {
+var defaultUrl = '';
+var data = {
     url: '',
     msg: ''
 };
 
 
-// const defaultUrl = 'www.galapro.com';
-const defaultUrl = '';
+function _queryDefaultUrl(url) {
+    var criteria = {};
+    if (url) criteria.url = {$regex : `.*${url}.*`};
+
+    console.log('Criteria', criteria);
+    return MongoService.connect()
+            .then(db => {
+                const collection = db.collection('url');
+                return collection.findOne(criteria)
+            })
+}
 
 
 function queryUrl(url, isChecked) {
+    _queryDefaultUrl(url)
+        .then(data => {
+            console.log('data after _queryDefaultUrl', data);
+            defaultUrl = data.url;
+            console.log('defaultUrl after _queryDefaultUrl:' , defaultUrl);
+            
+            // res.json(data);
+        })
+    console.log('defaultUrl after _queryDefaultUrl ', defaultUrl);
     console.log('isChecked in queryUrl ', isChecked);
     if (isChecked && url[0] + url[1] + url[2] === 'www') {
         console.log('the url starts with www and isChecked');
@@ -53,16 +58,7 @@ function queryUrl(url, isChecked) {
     // return Promise.resolve(defaultUrl);
 }
 
-function _makeId(length = 5) {
-    var text = '';
-    var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
-    for (var i = 0; i < length; i++) {
-        text += possible.charAt(Math.floor(Math.random() * possible.length));
-    }
-
-    return text;
-}
 
 module.exports = {
     queryUrl,

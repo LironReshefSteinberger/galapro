@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.2/workbox-sw.js");
 
 importScripts(
-  "/precache-manifest.b3a24f2e0ca4b910aa34ca6f72679a97.js"
+  "/precache-manifest.8146c4ec078b1e51469e00c27aadd630.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "galapro"});

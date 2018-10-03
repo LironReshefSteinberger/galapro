@@ -10,6 +10,18 @@ module.exports = (app) => {
         console.log('req.query.isChecked in route', req.query.isChecked);
         
         UrlService.queryUrl(req.query.url, req.query.isChecked)
-            .then(data => res.json(data))
+            .then(data => {
+                console.log('data', data);
+                
+                res.json(data);
+            })
     })
 }
+
+
+
+
+
+
+
+
