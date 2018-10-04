@@ -9,6 +9,8 @@
     </form>
     <h2 v-if="msg">{{msg}}</h2>
     <h2 v-if="url">{{url}}</h2>
+    <h2 v-if="urlSocket">user URL sent by socket: {{urlSocket}}</h2>
+    <h2 v-if="newUrl">new URL sent by socket: {{newUrl}}</h2>
   </div>
 </template>
 
@@ -27,6 +29,7 @@ export default {
         url: "",
         isChecked: true
       },
+      // newUrl: null,
     }
   },
   methods: {
@@ -34,6 +37,7 @@ export default {
       this.searchBy.url = this.searchBy.url.toLowerCase();      
       var searchBy = JSON.parse(JSON.stringify(this.searchBy));
       console.log('var searchBy', searchBy);
+      if (this.searchBy.url && !this.searchBy.isChecked) this.$socket.emit('openSocket');
       this.$store.dispatch({ type: "searchBy", searchBy }).then(url => {});
     }, 2000),
     redirectUrl(url) {
@@ -51,15 +55,26 @@ export default {
 
       // return this.redirectUrl(this.$store.getters.setUrl);
     },
+    urlSocket() {
+      return this.$store.getters.setUrlSocket;
+    },
+    newUrl() {
+      this.$socket.on('sendUserUrl', function(data){
+          console.log('sendUserUrl in home cpm', data);
+          return data;
+      });
+    },
     msg() {
       return this.$store.getters.setMsg;
     },
+    // msg() {
+    //   return this.$store.getters.setMsg;
+    // },
   },
   sockets: {
     openSocket() {
-      // this.$store.dispatch({ type: "openSocket", url: this.searchBy.url });
-      this.$socket.emit('openSocket')
-
+      this.$store.dispatch({ type: "openSocket", searchBy: this.searchBy });
+      
     }
   }
 };

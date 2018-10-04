@@ -32,8 +32,12 @@ io.on('connection', socket => {
 
   socket.on('openSocket', () => {
     io.emit('openSocket');
+    console.log('openSocket');
   })
 
+  setInterval(function(){
+    socket.emit('sendUserUrl', 'user url'); 
+}, 5000);
   // socket.on('disconnect', () => {
   //   // console.log('user disconnected');
   // })

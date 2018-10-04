@@ -15,7 +15,8 @@ export default new Vuex.Store({
         searchBy: {
           url: '',
           isChecked: true
-        }
+        },
+        urlSocket: null,
     },
     mutations: {
         // setUrlLoading(state, { isLoading }) {
@@ -36,12 +37,20 @@ export default new Vuex.Store({
           state.msg = msg;
           console.log('mutation setMsg state.msg', state.msg);
         },
+        setUrlSocket(state, { url }) {
+            console.log('mutation state.urlSocket', url);
+            state.urlSocket = url;
+            console.log('mutation setUrl state.urlSocket', state.urlSocket);
+        },
     },
     getters: {
         setUrl(state) {
-          console.log('ddddddd');
-          
+          console.log('setUrl');
             return state.url;
+        },
+        setUrlSocket(state) {
+          console.log('setUrlSocket');
+            return state.urlSocket;
         },
         // urlLoading(state) {
         //     return state.urlLoading
@@ -52,13 +61,16 @@ export default new Vuex.Store({
       },
     },
     actions: {
-        openSocket(context, {url}) {
-            context.commit({type: 'setUrlSocket', url})
-            MatchService.getMatch(url)
-               .then(activities => {
-                //    console.log('match from backend in front', activities);
-                   context.commit({type: 'setMatch', activities})
-                   })
+        openSocket(context, {searchBy}) {
+            console.log('in openSocket in actions');
+            return UrlService.query(searchBy)
+            .then((data) => {
+                if (data.url) {
+                  let url = data.url;
+                  context.commit({type: 'setUrlSocket', url});
+              
+                }
+            })
         },
         searchBy(context, { searchBy }) {
             // context.commit({ type: 'setUrlLoading', isLoading: true })
